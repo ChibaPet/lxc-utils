@@ -111,3 +111,13 @@ possible to have it select an init system on its own:
 # passwd root
 # adduser --add_extra_groups myname
 ~~~
+
+---
+
+Now would probably be a reasonable time for:
+
+~~~
+# depriv ${CONTAINERNAME} 100000
+~~~
+
+...as long as you get the location and the UID base right.
