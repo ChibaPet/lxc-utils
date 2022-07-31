@@ -1,10 +1,10 @@
 # lxc-utils
 Tools for composing content for containers.
 
-*** Warning - the following instructions will ravage your machine and then eat all the food in your refrigerator, and unlike the dwarves, they won't be kidding about breaking your dishes. ***
+***Warning - the following instructions will ravage your machine and then eat all the food in your refrigerator, and unlike the dwarves, they won't be kidding about breaking your dishes.***
 
-Buggy. Do not use unless you're feeling adventurous and like supporting
-your own systems.
+_Buggy. Do not use unless you're feeling adventurous and like supporting
+your own systems._
 
 ---
 
