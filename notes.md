@@ -1,6 +1,8 @@
-~~~
-# apt install lxc libpam-cgfs uidmap
+Run from the host system - general settings:
 
+~~~
+
+# apt install lxc libpam-cgfs uidmap
 # cat > /etc/lxc/default.conf <<END
 lxc.net.0.type = veth
 lxc.net.0.link = br0
@@ -13,12 +15,13 @@ END
 
 ---
 
+Run from the host system - container-specific:
+
 ~~~
 # CONTAINERNAME=testcontainer
 # CONTAINERMAC=DE:AD:BE:EF:00:00
 
 # mkdir -p /var/lib/lxc/${CONTAINERNAME}
-
 # cat > /var/lib/lxc/${CONTAINERNAME}/config <<END
 lxc.uts.name = ${CONTAINERNAME}
 lxc.rootfs.path = dir:/srv/lxc/${CONTAINERNAME}
@@ -32,7 +35,8 @@ END
 
 ---
 
-Run from the host system:
+Run this from the directory/dataset that contains the top level of your
+container:
 
 ~~~
 # http_proxy="http://cache.my.domain:3142" \
@@ -76,7 +80,8 @@ END
 
 ---
 
-In a chroot:
+In a chroot, to finish out what debootstrap would have done if it were
+possible to have it select an init system on its own:
 
 ~~~
 # apt-cache dumpavail | perl -00 -ne '/^Package: (.*)/m && print "$1\n"
