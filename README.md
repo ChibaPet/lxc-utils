@@ -18,19 +18,19 @@ unprivileged containers run by root arose. However, according to the
 
 Rather than selling a fish, it might be better to teach a person to fish.
 You can build a sysvinit-based, unprivileged Debian container without a
-great deal of pain. One challenge that didn't present an immediate option,
-however, was shifting the ownership of the directory tree to the correct
-range.
+great deal of pain. One challenge that didn't present an immediate
+solution, however, was shifting the ownership of the directory tree to the
+correct range.
 
-NOTE: As of 2022-07-31 the author (me, Mason Loring Bliss) is still
+_NOTE: As of 2022-07-31 the author (me, Mason Loring Bliss) is still
 exploring LXC, and there might be concepts of which I'm unaware that
-obviate all of this.
+obviate all of this._
 
-UNRELATED NOTE while I'm at it: GitHub doesn't have an option for
+_UNRELATED NOTE while I'm at it: GitHub doesn't have an option for
 four-clause BSD licenses, and that's what this is. Fedora doesn't like CC0
-any more, so we'll use an old favourite instead.
+any more, so we'll use an old favourite instead._
 
-This tool can be invoked generally as follows:
+This _depriv_ tool can be invoked generally as follows:
 
 ~~~
 # depriv /srv/lxc/testcontainer 100000 100000
