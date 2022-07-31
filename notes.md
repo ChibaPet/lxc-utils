@@ -51,7 +51,7 @@ container:
 
 ~~~
 # http_proxy="http://cache.my.domain:3142" \
-# debootstrap --no-merged-usr --arch=amd64 --variant=minbase \
+    debootstrap --no-merged-usr --arch=amd64 --variant=minbase \
     --include=sysvinit-core,libelogind0 \
     --exclude=systemd,systemd-sysv,libnss-systemd,libsystemd0 \
     bullseye ${CONTAINERNAME}/
