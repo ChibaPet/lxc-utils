@@ -14,8 +14,8 @@ END
 ---
 
 ~~~
-# CONTAINERNAME=azbuild
-# CONTAINERMAC=DE:AD:BE:EF:00:22
+# CONTAINERNAME=testcontainer
+# CONTAINERMAC=DE:AD:BE:EF:00:00
 
 # mkdir -p /var/lib/lxc/${CONTAINERNAME}
 
