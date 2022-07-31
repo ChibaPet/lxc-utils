@@ -35,7 +35,7 @@ lxc.include = /usr/share/lxc/config/debian.common.conf
 END
 ~~~
 
-Don't forget to add a root range to /etc/subuid and /etc/subgid! Use that
+Don't forget to add /etc/subuid and /etc/subgid ranges for root! Use that
 range in the idmap config. Then _after everything's set up,_ but before you
 launch, you can use the depriv tool to map the container tree to this
 range:
