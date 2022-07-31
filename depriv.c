@@ -190,7 +190,6 @@ void processpath(size_t length)
         if (lchown(pathname, newuid, newgid) == -1) {
             fprintf(stderr, "Error: could not lchown(2) %s: %s\n", pathname,
                     strerror(errno));
-            return;
         }
     }
 
