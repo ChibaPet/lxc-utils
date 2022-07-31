@@ -29,8 +29,19 @@ lxc.net.0.type = veth
 lxc.net.0.link = br0
 lxc.net.0.flags = up
 lxc.net.0.hwaddr = ${CONTAINERMAC}
+lxc.idmap = u 0 100000 65536
+lxc.idmap = g 0 100000 65536
 lxc.include = /usr/share/lxc/config/debian.common.conf
 END
+~~~
+
+Don't forget to add a root range to /etc/subuid and /etc/subgid! Use that
+range in the idmap config. Then _after everything's set up,_ but before you
+launch, you can use the depriv tool to map the container tree to this
+range:
+
+~~~
+# depriv /some/where/${CONTAINERNAME} 100000
 ~~~
 
 ---
