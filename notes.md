@@ -50,7 +50,9 @@ Run this from the directory/dataset that contains the top level of your
 container:
 
 ~~~
-# http_proxy="http://cache.my.domain:3142" \
+# MYDOMAIN="my.domain"
+
+# http_proxy="http://cache.${MYDOMAIN}:3142" \
     debootstrap --no-merged-usr --arch=amd64 --variant=minbase \
     --include=sysvinit-core,libelogind0 \
     --exclude=systemd,systemd-sysv,libnss-systemd,libsystemd0 \
@@ -82,7 +84,7 @@ END
 
 # mkdir -p ${CONTAINERNAME}/etc/apt/apt.conf.d
 # cat > ${CONTAINERNAME}/etc/apt/apt.conf.d/02proxy <<END
-Acquire::http::Proxy "http://cache.my.domain:3142";
+Acquire::http::Proxy "http://cache.${MYDOMAIN}:3142";
 END
 
 # sed -i "/^[56]:23:respawn:\/sbin\/getty/ s/^/#/" ${CONTAINERNAME}/etc/inittab
