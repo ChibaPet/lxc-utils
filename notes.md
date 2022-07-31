@@ -58,6 +58,7 @@ container:
 
 # echo $CONTAINERNAME > ${CONTAINERNAME}/etc/hostname
 # mkdir -p ${CONTAINERNAME}/etc/network
+# echo "auto eth0" >> ${CONTAINERNAME}/etc/network/interfaces
 # echo "iface eth0 inet dhcp" >> ${CONTAINERNAME}/etc/network/interfaces
 
 # mkdir -p ${CONTAINERNAME}/etc/apt/preferences.d
