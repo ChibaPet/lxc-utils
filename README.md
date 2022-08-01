@@ -61,7 +61,7 @@ containers as no costly filesystem remapping is needed on creation or
 startup."
 
 Here's the cost of processing a complete Debian minimal install, sitting on
-a ZFS mirror atop LUKS:
+a ZFS mirror atop LUKS, all on 5400 RPM spinning rust:
 
 ~~~
 /srv/lxc# time depriv /srv/lxc/base 100000
