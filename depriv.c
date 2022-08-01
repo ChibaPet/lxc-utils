@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 
     /* Seed pathname. */
     length = strlen(argv[1]);
-    if (length >= FOOLISHLYLONGPATHMAX) {
+    if ((length + 1) > FOOLISHLYLONGPATHMAX) {
         fprintf(stderr, "Error: path too long: %s.\n", argv[1]);
         exit(1);
     }
@@ -212,7 +212,7 @@ void processpath(size_t length)
                 continue;
             }
             /* Path too long? */
-            if ((length + newlength + 1) >= FOOLISHLYLONGPATHMAX) {
+            if ((length + newlength + 2) > FOOLISHLYLONGPATHMAX) {
                 fprintf(stderr, "Error: path too long: %s%s\n",
                         pathname, entry->d_name);
                 exit(1);
