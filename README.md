@@ -50,3 +50,25 @@ datasets, which the tools use for seamless migration between systems.
 Contact me if you want to see this happen sooner. For now I've included my
 notes that demonstrate setting up a root-managed unprivileged container
 using a host bridge, from scratch using debootstrap.
+
+---
+
+After writing this, I encountered
+[shiftfs](https://discuss.linuxcontainers.org/t/trying-out-shiftfs/5155)
+which does something similar, but as a kernel module. In the introduction,
+they say "This allows for instant creation and startup of unprivileged
+containers as no costly filesystem remapping is needed on creation or
+startup."
+
+Here's the cost of processing a complete Debian minimal install, sitting on
+a ZFS mirror atop LUKS:
+
+~~~
+/srv/lxc# time depriv /srv/lxc/base 100000
+
+real	0m0.370s
+user	0m0.020s
+sys	0m0.350s
+~~~
+
+Yes, that's a bit over a third of a second.
