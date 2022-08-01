@@ -227,9 +227,9 @@ void processpath(size_t length)
             } else {
                 strncpy(pathname + length, entry->d_name, newlength);
                 processpath(length + newlength);
+                /* trim back to where we were before this call */
+                *(pathname + length) = '\0';
             }
-            /* trim back to where we were before this call */
-            *(pathname + length) = '\0';
         }
         closedir(directory);
     }
