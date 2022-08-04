@@ -105,9 +105,9 @@ int main(int argc, char *argv[])
         usage();
     }
 
-    /* Seed pathname. Length includes trailing null. */
-    length = strlen(argv[1]) + 1;
-    if (length > FOOLISHLYLONGPATHMAX) {
+    /* Seed pathname. */
+    length = strlen(argv[1]);
+    if ((length + 1) > FOOLISHLYLONGPATHMAX) {
         fprintf(stderr, "Error: path too long: %s.\n", argv[1]);
         exit(1);
     }
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     memset(pathname, 0, FOOLISHLYLONGPATHMAX);
-    strncpy(pathname, argv[1], length);
+    strncpy(pathname, argv[1], length + 1);
 
     /* Try to avoid some of the more obvious footcannons. */
     for (i = 0; i < FOOTCANNONCOUNT; ++i) {
@@ -204,10 +204,9 @@ void processpath(size_t length)
     /* process entries if a directory */
     if ((sb.st_mode & S_IFMT) == S_IFDIR) {
         directory = opendir(pathname);
-        if (length < FOOLISHLYLONGPATHMAX) {
+        if ((length + 1) < FOOLISHLYLONGPATHMAX) {
             /* replace trailing null with directory separator */
-            *(pathname + length - 1) = '/';
-            *(pathname + length) = '\0';
+            *(pathname + length) = '/';
         } else {
             fprintf(stderr, "Error: path too long below: %s\n",
                     pathname);
@@ -219,16 +218,15 @@ void processpath(size_t length)
                 continue;
             }
             /* Path too long? */
-            newlength = strlen(entry->d_name) + 1;
-            /* remember, length's terminating null is now a / */
-            if ((length + newlength) > FOOLISHLYLONGPATHMAX) {
+            newlength = strlen(entry->d_name);
+            if ((length + 1 + newlength + 1) > FOOLISHLYLONGPATHMAX) {
                 /* trim back to where we were before this call */
-                *(pathname + length - 1) = '\0';
+                *(pathname + length) = '\0';
                 fprintf(stderr, "Error: path too long: %s%s\n",
                         pathname, entry->d_name);
             } else {
-                strncpy(pathname + length, entry->d_name, newlength);
-                processpath(length + newlength);
+                strncpy(pathname + length + 1, entry->d_name, newlength + 1);
+                processpath(length + 1 + newlength);
             }
         }
         closedir(directory);
