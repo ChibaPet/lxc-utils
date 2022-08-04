@@ -223,7 +223,7 @@ void processpath(size_t length)
             /* remember, length's terminating null is now a / */
             if ((length + newlength) > FOOLISHLYLONGPATHMAX) {
                 /* trim back to where we were before this call */
-                *(pathname + length) = '\0';
+                *(pathname + length - 1) = '\0';
                 fprintf(stderr, "Error: path too long: %s%s\n",
                         pathname, entry->d_name);
             } else {
