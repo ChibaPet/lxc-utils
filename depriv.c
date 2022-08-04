@@ -222,13 +222,13 @@ void processpath(size_t length)
             newlength = strlen(entry->d_name) + 1;
             /* remember, length's terminating null is now a / */
             if ((length + newlength) > FOOLISHLYLONGPATHMAX) {
+                /* trim back to where we were before this call */
+                *(pathname + length) = '\0';
                 fprintf(stderr, "Error: path too long: %s%s\n",
                         pathname, entry->d_name);
             } else {
                 strncpy(pathname + length, entry->d_name, newlength);
                 processpath(length + newlength);
-                /* trim back to where we were before this call */
-                *(pathname + length) = '\0';
             }
         }
         closedir(directory);
