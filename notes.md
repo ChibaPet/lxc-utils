@@ -78,6 +78,7 @@ container - /srv/lxc in my examples:
 
 ~~~
 # cd /srv/lxc
+# mkdir -p ${CONTAINERNAME}/rootfs
 
 # MYDOMAIN="my.domain"
 
@@ -85,7 +86,7 @@ container - /srv/lxc in my examples:
     debootstrap --no-merged-usr --arch=amd64 --variant=minbase \
     --include=sysvinit-core,libelogind0 \
     --exclude=systemd,systemd-sysv,libnss-systemd,libsystemd0 \
-    bullseye ${CONTAINERNAME}/
+    bullseye ${CONTAINERNAME}/rootfs
 
 # echo $CONTAINERNAME > ${CONTAINERNAME}/etc/hostname
 # mkdir -p ${CONTAINERNAME}/etc/network
