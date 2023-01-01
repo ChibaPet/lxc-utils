@@ -1,4 +1,29 @@
-Run from the host system - general settings:
+Overview:
+
+We're going to setup /srv/lxc with one directory (or ideally ZFS dataset)
+per container. Each directory will be owned by root:root, and will have a
+config file owned by root:root, and a rootfs owned by the bottom
+subuid/subgid (root account) for the container.
+
+The notion is that we can migrate containers around by sending the
+appropriate dataset per container. Creating new containers might involve a
+tool (forthcoming) to grab a kernel advisory lock on /etc/sub{u,g}id to
+identify and provision a new range for the container. It's not yet clear to
+me what the most sensible tool will be to migrate sub{u,g}id ranges - the
+clearest solution that occurs to me right now (20230101) is a preparatory
+check with the provisioning tool that will succeed or fail based on its
+ability to provision the desired range on the remote machine. If it can,
+then the set can be transferred much the same way I do it today with my
+(unpublished) VM tools. (Config will need to be renamed to keep it from
+autostarting. Prior to move maybe, so we don't end up with the process
+breaking leaving us with two containers that want to run?)
+
+Wish list: an extended /etc/sub{u,g}id with support for comments, or (and I
+know this could be racey) something like /etc/sub{u,g}id.d.
+
+---
+
+Run from the host system - shared settings for containers:
 
 ~~~
 
@@ -13,7 +38,13 @@ lxc.arch = amd64
 END
 ~~~
 
----
+Run from the host system - path to configs and storage:
+
+~~~
+# cat > /etc/lxc/lxc.conf <<END
+lxc.lxcpath = /srv/lxc
+END
+~~~
 
 Run from the host system - container-specific:
 
@@ -24,7 +55,7 @@ Run from the host system - container-specific:
 # mkdir -p /srv/lxc/${CONTAINERNAME}
 # cat > /srv/lxc/${CONTAINERNAME}/config <<END
 lxc.uts.name = ${CONTAINERNAME}
-lxc.rootfs.path = dir:/srv/lxc/${CONTAINERNAME}
+lxc.rootfs.path = dir:/srv/lxc/${CONTAINERNAME}/rootfs
 lxc.net.0.type = veth
 lxc.net.0.link = br0
 lxc.net.0.flags = up
