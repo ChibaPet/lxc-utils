@@ -21,8 +21,8 @@ Run from the host system - container-specific:
 # CONTAINERNAME=testcontainer
 # CONTAINERMAC=DE:AD:BE:EF:00:00
 
-# mkdir -p /var/lib/lxc/${CONTAINERNAME}
-# cat > /var/lib/lxc/${CONTAINERNAME}/config <<END
+# mkdir -p /srv/lxc/${CONTAINERNAME}
+# cat > /srv/lxc/${CONTAINERNAME}/config <<END
 lxc.uts.name = ${CONTAINERNAME}
 lxc.rootfs.path = dir:/srv/lxc/${CONTAINERNAME}
 lxc.net.0.type = veth
@@ -38,18 +38,16 @@ END
 Don't forget to add /etc/subuid and /etc/subgid ranges for root! Use that
 range in the idmap config. Then _after everything's set up,_ but before you
 launch, you can use the depriv tool to map the container tree to this
-range:
-
-~~~
-# depriv /some/where/${CONTAINERNAME} 100000
-~~~
+range.
 
 ---
 
 Run this from the directory/dataset that contains the top level of your
-container:
+container - /srv/lxc in my examples:
 
 ~~~
+# cd /srv/lxc
+
 # MYDOMAIN="my.domain"
 
 # http_proxy="http://cache.${MYDOMAIN}:3142" \
@@ -98,6 +96,8 @@ In a chroot, to finish out what debootstrap would have done if it were
 possible to have it select an init system on its own:
 
 ~~~
+# chroot ${CONTAINERNAME}
+
 # apt-cache dumpavail | perl -00 -ne '/^Package: (.*)/m && print "$1\n"
     if (/^Priority: (?:required|important|standard)/m
         and ! /^Package: .*systemd/m)' | xargs apt --yes install
@@ -113,6 +113,8 @@ possible to have it select an init system on its own:
 
 # passwd root
 # adduser --add_extra_groups myname
+
+# exit
 ~~~
 
 ---
@@ -123,4 +125,4 @@ Now would probably be a reasonable time for:
 # depriv ${CONTAINERNAME} 100000
 ~~~
 
-...as long as you get the location and the UID base right.
+...after you double-check the subuid and subgid ranges.
