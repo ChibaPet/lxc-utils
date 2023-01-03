@@ -88,13 +88,13 @@ container - /srv/lxc in my examples:
     --exclude=systemd,systemd-sysv,libnss-systemd,libsystemd0 \
     bullseye ${CONTAINERNAME}/rootfs
 
-# echo $CONTAINERNAME > ${CONTAINERNAME}/etc/hostname
-# mkdir -p ${CONTAINERNAME}/etc/network
-# echo "auto eth0" >> ${CONTAINERNAME}/etc/network/interfaces
-# echo "iface eth0 inet dhcp" >> ${CONTAINERNAME}/etc/network/interfaces
+# echo $CONTAINERNAME > ${CONTAINERNAME}/rootfs/etc/hostname
+# mkdir -p ${CONTAINERNAME}/rootfs/etc/network
+# echo "auto eth0" >> ${CONTAINERNAME}/rootfs/etc/network/interfaces
+# echo "iface eth0 inet dhcp" >> ${CONTAINERNAME}/rootfs/etc/network/interfaces
 
-# mkdir -p ${CONTAINERNAME}/etc/apt/preferences.d
-# cat <<END > ${CONTAINERNAME}/etc/apt/preferences.d/no-systemd
+# mkdir -p ${CONTAINERNAME}/rootfs/etc/apt/preferences.d
+# cat <<END > ${CONTAINERNAME}/rootfs/etc/apt/preferences.d/no-systemd
 Package: systemd
 Pin: release *
 Pin-Priority: -1
@@ -112,14 +112,15 @@ Pin: release *
 Pin-Priority: -1
 END
 
-# mkdir -p ${CONTAINERNAME}/etc/apt/apt.conf.d
-# cat > ${CONTAINERNAME}/etc/apt/apt.conf.d/02proxy <<END
+# mkdir -p ${CONTAINERNAME}/rootfs/etc/apt/apt.conf.d
+# cat > ${CONTAINERNAME}/rootfs/etc/apt/apt.conf.d/02proxy <<END
 Acquire::http::Proxy "http://cache.${MYDOMAIN}:3142";
 END
 
-# sed -i "/^[56]:23:respawn:\/sbin\/getty/ s/^/#/" ${CONTAINERNAME}/etc/inittab
+# sed -i "/^[56]:23:respawn:\/sbin\/getty/ s/^/#/" \
+    ${CONTAINERNAME}/rootfs/etc/inittab
 # sed -i "s/^pf::powerwait:.*/pf::powerwait:\/etc\/init.d\/rc 0/g" \
-    ${CONTAINERNAME}/etc/inittab
+    ${CONTAINERNAME}/rootfs/etc/inittab
 ~~~
 
 ---
@@ -128,7 +129,7 @@ In a chroot, to finish out what debootstrap would have done if it were
 possible to have it select an init system on its own:
 
 ~~~
-# chroot ${CONTAINERNAME}
+# chroot ${CONTAINERNAME}/rootfs
 
 # apt-cache dumpavail | perl -00 -ne '/^Package: (.*)/m && print "$1\n"
     if (/^Priority: (?:required|important|standard)/m
@@ -154,7 +155,7 @@ possible to have it select an init system on its own:
 Now would probably be a reasonable time for:
 
 ~~~
-# depriv ${CONTAINERNAME} 100000
+# depriv ${CONTAINERNAME}/rootfs 100000
 ~~~
 
 ...after you double-check the subuid and subgid ranges.
