@@ -26,7 +26,6 @@ know this could be racey) something like /etc/sub{u,g}id.d.
 Run from the host system - shared settings for containers:
 
 ~~~
-
 # apt install lxc libpam-cgfs uidmap
 # cat > /etc/lxc/default.conf <<END
 lxc.net.0.type = veth
@@ -44,6 +43,14 @@ Run from the host system - path to configs and storage:
 # cat > /etc/lxc/lxc.conf <<END
 lxc.lxcpath = /srv/lxc
 END
+~~~
+
+I don't know what mounts this automatically on some systems, but if you get
+errors about not being able to allocate memory, you might verify that
+`/sys/fs/cgroup` is mounted. If it's not, you can add this to `/etc/fstab`:
+
+~~~
+cgroup2 /sys/fs/cgroup cgroup2 rw,nosuid,nodev,noexec,relatime 0 0
 ~~~
 
 Run from the host system - container-specific:
