@@ -1,13 +1,13 @@
 Overview:
 
-We're going to setup /srv/lxc with one directory (or ideally ZFS dataset)
+We're going to setup `/srv/lxc` with one directory (or ideally ZFS dataset)
 per container. Each directory will be owned by root:root, and will have a
-config file owned by root:root, and a rootfs owned by the bottom
+config file owned by `root:root`, and a rootfs owned by the bottom
 subuid/subgid (root account) for the container.
 
 The notion is that we can migrate containers around by sending the
 appropriate dataset per container. Creating new containers might involve a
-tool (forthcoming) to grab a kernel advisory lock on /etc/sub{u,g}id to
+tool (forthcoming) to grab a kernel advisory lock on `/etc/sub{u,g}id` to
 identify and provision a new range for the container. It's not yet clear to
 me what the most sensible tool will be to migrate sub{u,g}id ranges - the
 clearest solution that occurs to me right now (20230101) is a preparatory
@@ -18,8 +18,8 @@ then the set can be transferred much the same way I do it today with my
 autostarting. Prior to move maybe, so we don't end up with the process
 breaking leaving us with two containers that want to run?)
 
-Wish list: an extended /etc/sub{u,g}id with support for comments, or (and I
-know this could be racey) something like /etc/sub{u,g}id.d.
+Wish list: an extended `/etc/sub{u,g}id` with support for comments, or (and I
+know this could be racey) something like `/etc/sub{u,g}id.d`.
 
 ---
 
@@ -73,15 +73,15 @@ lxc.include = /usr/share/lxc/config/debian.common.conf
 END
 ~~~
 
-Don't forget to add /etc/subuid and /etc/subgid ranges for root! Use that
-range in the idmap config. Then _after everything's set up,_ but before you
-launch, you can use the depriv tool to map the container tree to this
-range.
+Don't forget to add `/etc/subuid` and `/etc/subgid` ranges for root! Use
+that range in the idmap config. Then _after everything's set up,_ but
+before you launch, you can use the depriv tool to map the container tree to
+this range.
 
 ---
 
 Run this from the directory/dataset that contains the top level of your
-container - /srv/lxc in my examples:
+container - `/srv/lxc` in my examples:
 
 ~~~
 # cd /srv/lxc
@@ -132,7 +132,7 @@ END
 
 ---
 
-In a chroot, to finish out what debootstrap would have done if it were
+In a chroot, to finish out what `debootstrap` would have done if it were
 possible to have it select an init system on its own:
 
 ~~~
