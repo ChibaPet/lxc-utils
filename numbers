@@ -1,0 +1,6 @@
+#!/bin/sh
+NUMBER=100000
+while [ $NUMBER -le $((4294967295 - 65536)) ]; do
+    printf "0:$NUMBER:65536\n" $NUMBER
+    NUMBER=$(($NUMBER + 65536))
+done
