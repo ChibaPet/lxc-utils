@@ -81,7 +81,15 @@ this range.
 ---
 
 Run this from the directory/dataset that contains the top level of your
-container - `/srv/lxc` in my examples:
+container - `/srv/lxc` in my examples. Note that installing Bookworm from
+Bullseye will force in usrmerge even if you've specified otherwise, pinned
+it away, performed a blood sacrifice, etc. I'll update this for Bookworm
+soon, but until then, realize that you'll probably want to upgrade your
+host before trying to install new Bookworm guests. (This shouldn't be a
+problem upgrading from within, and you could always do the container
+debootstrap on a Bookworm system and migrate it to your existing Bullseye
+host if you're not ready to upgrade it.) (And, you could just use UsrMerge,
+if you don't mind it breaking dpkg for [no compelling reason](https://wiki.debian.org/Teams/Dpkg/MergedUsr).)
 
 ~~~
 # cd /srv/lxc
