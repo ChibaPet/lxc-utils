@@ -181,8 +181,12 @@ void processpath(size_t length)
         }
     } else {
         /* repriv */
-        newuid = sb.st_uid - uidbase;
-        newgid = sb.st_gid - gidbase;
+        if (sb.st_uid >= uidbase) {
+            newuid = sb.st_uid - uidbase;
+        }
+        if (sb.st_gid >= gidbase) {
+            newgid = sb.st_gid - gidbase;
+        }
     }
     if (newuid != -1 || newgid != -1) {
         if (lchown(pathname, newuid, newgid) == -1) {
