@@ -101,7 +101,7 @@ if you don't mind it breaking dpkg for [no compelling reason](https://wiki.debia
     debootstrap --no-merged-usr --arch=amd64 --variant=minbase \
     --include=sysvinit-core,libelogind0 \
     --exclude=systemd,systemd-sysv,libnss-systemd,libsystemd0 \
-    bullseye ${CONTAINERNAME}/rootfs
+    bookworm ${CONTAINERNAME}/rootfs
 
 # echo $CONTAINERNAME > ${CONTAINERNAME}/rootfs/etc/hostname
 # mkdir -p ${CONTAINERNAME}/rootfs/etc/network
