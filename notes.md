@@ -91,6 +91,12 @@ debootstrap on a Bookworm system and migrate it to your existing Bullseye
 host if you're not ready to upgrade it.) (And, you could just use UsrMerge,
 if you don't mind it breaking dpkg for [no compelling reason](https://wiki.debian.org/Teams/Dpkg/MergedUsr).)
 
+Note that I serve init-system-helpers 1.64 from a local repository because
+of UsrMerge breakage. You might wish to do the same, or, perhaps slicker,
+you could pin the specific version. Once Bookworm's successor is released
+the UsrMerge breakage will be less, and it'll be less painful allowing it
+in, in which case the special handling will go away here.
+
 ~~~
 # cd /srv/lxc
 # mkdir -p ${CONTAINERNAME}/rootfs
@@ -110,21 +116,19 @@ if you don't mind it breaking dpkg for [no compelling reason](https://wiki.debia
 
 # mkdir -p ${CONTAINERNAME}/rootfs/etc/apt/preferences.d
 # cat <<END > ${CONTAINERNAME}/rootfs/etc/apt/preferences.d/no-systemd
-Package: systemd
+Package:
+    avahi-daemon:any
+    src:usrmerge:any
+    systemd:any
+    systemd-sysv:any
+    libnss-systemd:any
 Pin: release *
 Pin-Priority: -1
 
-Package: systemd:i386
-Pin: release *
-Pin-Priority: -1
-
-Package: systemd-sysv
-Pin: release *
-Pin-Priority: -1
-
-Package: libnss-systemd
-Pin: release *
-Pin-Priority: -1
+Package:
+    init-system-helpers:any
+Pin: origin repo.${MYDOMAIN}
+Pin-Priority: 1000
 END
 
 # mkdir -p ${CONTAINERNAME}/rootfs/etc/apt/apt.conf.d
