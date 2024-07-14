@@ -148,7 +148,8 @@ possible to have it select an init system on its own:
 
 # apt-cache dumpavail | perl -00 -ne '/^Package: (.*)/m && print "$1\n"
     if (/^Priority: (?:required|important|standard)/m
-        and ! /^Package: .*systemd/m)' | xargs apt --yes install
+        and ! /^Package: .*systemd/m)' \
+            | xargs apt --yes --allow-downgrades install
 
 # apt install --yes curl bsd-mailx locales man vim-nox net-tools \
     ifupdown bash-completion patch
