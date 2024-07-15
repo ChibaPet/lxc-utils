@@ -53,11 +53,14 @@ errors about not being able to allocate memory, you might verify that
 cgroup2 /sys/fs/cgroup cgroup2 rw,nosuid,nodev,noexec,relatime 0 0
 ~~~
 
-Run from the host system - container-specific:
+Run from the host system - container-specific. Pick an appropriate subuid
+range and assign it to root. (You can do one big range, but I like breaking
+them up into 65,536-UID sets.)
 
 ~~~
 # CONTAINERNAME=testcontainer
 # CONTAINERMAC=DE:AD:BE:EF:00:00
+# CONTAINERSUBUID=100000
 
 # mkdir -p /srv/lxc/${CONTAINERNAME}
 # cat > /srv/lxc/${CONTAINERNAME}/config <<END
@@ -67,8 +70,8 @@ lxc.net.0.type = veth
 lxc.net.0.link = br0
 lxc.net.0.flags = up
 lxc.net.0.hwaddr = ${CONTAINERMAC}
-lxc.idmap = u 0 100000 65536
-lxc.idmap = g 0 100000 65536
+lxc.idmap = u 0 ${CONTAINERSUBUID} 65536
+lxc.idmap = g 0 ${CONTAINERSUBUID} 65536
 lxc.include = /usr/share/lxc/config/debian.common.conf
 END
 ~~~
@@ -165,15 +168,14 @@ possible to have it select an init system on its own:
             | xargs apt --yes --allow-downgrades install
 
 # apt install --yes curl bsd-mailx locales man vim-nox net-tools \
-    ifupdown bash-completion patch
+    ifupdown bash-completion patch openssh-server rsync \
+    orphan-sysvinit-scripts rsyslog
 
-# locale-gen en_US.UTF-8
 # dpkg-reconfigure locales
 # dpkg-reconfigure tzdata
 
-# apt install --yes openssh-server rsync
-
 # passwd root
+
 # adduser --add_extra_groups myname
 
 # exit
@@ -184,7 +186,7 @@ possible to have it select an init system on its own:
 Now would probably be a reasonable time for:
 
 ~~~
-# depriv ${CONTAINERNAME}/rootfs 100000
+# depriv ${CONTAINERNAME}/rootfs ${CONTAINERSUBUID}
 ~~~
 
 ...after you double-check the subuid and subgid ranges.
