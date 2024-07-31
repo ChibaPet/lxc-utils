@@ -196,7 +196,8 @@ Now would probably be a reasonable time for:
 Migrating VMs to containers is relatively straightforward. Create a layout
 in /srv/lxc as above, mount up the VM's disks, and rsync everything over.
 Make the noted changes to /etc/inittab in the new guest. Make sure to empty
-out the fstab as there will be no more local disks!
+out the fstab (except for maybe a tmpfs /tmp) as there will be no more
+local disks!
 
 Before you depriv, it's safe enough to chroot in and remove kernel and
 initramfs packages, bootloaders, and potentially other stuff. Note:
